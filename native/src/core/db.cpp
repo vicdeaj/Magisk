@@ -112,11 +112,11 @@ int db_strings::get_idx(string_view key) const {
 
 db_settings::db_settings() {
     // Default settings
-    data[ROOT_ACCESS] = ROOT_ACCESS_APPS_AND_ADB;
+    data[ROOT_ACCESS] = ROOT_ACCESS_DISABLED;
     data[SU_MULTIUSER_MODE] = MULTIUSER_MODE_OWNER_ONLY;
     data[SU_MNT_NS] = NAMESPACE_MODE_REQUESTER;
-    data[DENYLIST_CONFIG] = false;
-    data[ZYGISK_CONFIG] = false;
+    data[DENYLIST_CONFIG] = true;
+    data[ZYGISK_CONFIG] = true;
 }
 
 int db_settings::get_idx(string_view key) const {

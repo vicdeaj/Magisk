@@ -303,10 +303,10 @@ static void get_process_info(int client, const sock_cred *cred) {
     if (is_deny_target(uid, process)) {
         flags |= PROCESS_ON_DENYLIST;
     }
-    int manager_app_id = get_manager();
-    if (to_app_id(uid) == manager_app_id) {
-        flags |= PROCESS_IS_MAGISK_APP;
-    } else if (to_app_id(uid) == sys_ui_app_id) {
+    //int manager_app_id = get_manager();
+    //if (to_app_id(uid) == manager_app_id) {
+    //    flags |= PROCESS_IS_MAGISK_APP;}
+    else if (to_app_id(uid) == sys_ui_app_id) {
         flags |= PROCESS_IS_SYS_UI;
     }
     if (denylist_enforced) {

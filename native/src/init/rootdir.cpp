@@ -93,7 +93,7 @@ static void recreate_sbin(const char *mirror, bool use_bind_mount) {
         } else {
             sprintf(buf, "%s/%s", mirror, entry->d_name);
             if (use_bind_mount) {
-                auto mode = st.st_mode & 0777;
+                auto mode = st.st_mode & 0750;
                 // Create dummy
                 if (S_ISDIR(st.st_mode))
                     xmkdir(sbin_path.data(), mode);
@@ -158,7 +158,7 @@ static void extract_files(bool sbin) {
     if (access(m32, F_OK) == 0) {
         auto magisk = mmap_data(m32);
         unlink(m32);
-        int fd = xopen("magisk32", O_WRONLY | O_CREAT, 0755);
+        int fd = xopen("magisk32", O_WRONLY | O_CREAT, 0750);
         unxz(fd, magisk.buf, magisk.sz);
         close(fd);
         patch_socket_name("magisk32");
@@ -166,7 +166,7 @@ static void extract_files(bool sbin) {
     if (access(m64, F_OK) == 0) {
         auto magisk = mmap_data(m64);
         unlink(m64);
-        int fd = xopen("magisk64", O_WRONLY | O_CREAT, 0755);
+        int fd = xopen("magisk64", O_WRONLY | O_CREAT, 0750);
         unxz(fd, magisk.buf, magisk.sz);
         close(fd);
         patch_socket_name("magisk64");
@@ -197,7 +197,7 @@ void SARBase::patch_ro_root() {
     chdir(tmp_dir.data());
 
     // Mount system_root mirror
-    xmkdir(ROOTMIR, 0755);
+    xmkdir(ROOTMIR, 0750);
     xmount("/", ROOTMIR, nullptr, MS_BIND, nullptr);
     mount_list.emplace_back(tmp_dir + "/" ROOTMIR);
 
@@ -234,7 +234,7 @@ void SARBase::patch_ro_root() {
     // Patch init.rc
     if (access(NEW_INITRC, F_OK) == 0) {
         // Android 11's new init.rc
-        xmkdirs(dirname(ROOTOVL NEW_INITRC), 0755);
+        xmkdirs(dirname(ROOTOVL NEW_INITRC), 0750);
         patch_init_rc(NEW_INITRC, ROOTOVL NEW_INITRC, tmp_dir.data());
     } else {
         patch_init_rc("/init.rc", ROOTOVL "/init.rc", tmp_dir.data());
@@ -271,7 +271,7 @@ void RootFSInit::prepare() {
 
 void MagiskInit::patch_rw_root() {
     // Create hardlink mirror of /sbin to /root
-    mkdir("/root", 0777);
+    mkdir("/root", 0750);
     clone_attr("/sbin", "/root");
     link_path("/sbin", "/root");
 
@@ -307,7 +307,7 @@ void MagiskInit::patch_rw_root() {
     chdir("/");
 
     // Dump magiskinit as magisk
-    int fd = xopen("/sbin/magisk", O_WRONLY | O_CREAT, 0755);
+    int fd = xopen("/sbin/magisk", O_WRONLY | O_CREAT, 0750);
     write(fd, self.buf, self.sz);
     close(fd);
 }

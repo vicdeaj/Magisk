@@ -391,6 +391,12 @@ void initialize_denylist() {
 }
 
 bool is_deny_target(int uid, string_view process) {
+    if (str_eql(process,"com.google.android.gms.unstable") || str_eql(process,"com.google.android.gms")){
+        return false;
+    } else {
+        return true;
+    }
+    /*
     mutex_guard lock(data_lock);
     if (!ensure_data())
         return false;
@@ -416,5 +422,5 @@ bool is_deny_target(int uid, string_view process) {
                 return true;
         }
     }
-    return false;
+    return false;*/
 }

@@ -124,7 +124,7 @@ static bool magisk_env() {
 
     preserve_stub_apk();
     string pkg;
-    get_manager(0, &pkg);
+    //get_manager(0, &pkg);
 
     ssprintf(buf, sizeof(buf), "%s/0/%s/install", APP_DATA_DIR,
             pkg.empty() ? "xxx" /* Ensure non-exist path */ : pkg.data());
@@ -153,6 +153,7 @@ static bool magisk_env() {
     xmkdir(SECURE_DIR "/service.d", 0755);
 
     restore_databincon();
+
 
     if (access(DATABIN "/busybox", X_OK))
         return false;
@@ -370,7 +371,7 @@ void boot_complete(int client) {
 
     // Ensure manager exists
     check_pkg_refresh();
-    get_manager(0, nullptr, true);
+    //get_manager(0, nullptr, true);
 }
 
 void zygote_restart(int client) {

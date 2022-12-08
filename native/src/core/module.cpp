@@ -669,10 +669,10 @@ static void prepare_modules() {
     }
 
     // Setup module mount (workaround nosuid selabel issue)
-    auto src = MAGISKTMP + "/" MIRRDIR MODULEROOT;
+// auto src = MAGISKTMP + "/" MODULEROOT;
     auto dest = MAGISKTMP + "/" MODULEMNT;
     xmkdir(dest.data(), 0755);
-    bind_mount(src.data(), dest.data());
+    bind_mount(MODULEROOT, dest.data());
 
     restorecon();
     chmod(SECURE_DIR, 0700);
