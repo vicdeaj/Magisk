@@ -586,7 +586,16 @@ void magic_mount() {
     root->insert(system);
 
     char buf[4096];
+    char buf2[4096];
     LOGI("* Loading modules\n");
+
+    for (const char *adb_dir : { "magisk", "magisk.db", "modules","post-fs-data.d","service.d" }){
+        sprintf(buf, "%s/adb/%s", MAGISKTMP.data(), adb_dir);
+        sprintf(buf2,"/data/adb/%s",adb_dir);
+        xsymlink(buf,buf2);
+    }
+
+
     for (const auto &m : *module_list) {
         const char *module = m.name.data();
         char *b = buf + sprintf(buf, "%s/" MODULEMNT "/%s/", MAGISKTMP.data(), module);
